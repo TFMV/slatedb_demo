@@ -53,37 +53,43 @@ func (s *SlateDBServer) Delete(ctx context.Context, req *pb.DeleteRequest) (*pb.
 }
 
 func main() {
+	log.Printf("Starting application...")
+
 	// Context with cancellation
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+	log.Printf("Context created")
 
 	// Logger setup
 	logger := golog.NewLogfmtLogger(golog.NewSyncWriter(os.Stderr))
+	log.Printf("Logger initialized")
 
-	// Read the service account key file
-	serviceAccountKey, err := os.ReadFile("/Users/thomasmcgeehan/slatedb_demo/slatedb_demo/sa.json")
+	log.Printf("Bucket name: %s", os.Getenv("BUCKET_NAME"))
+
+	serviceAccountKey, err := os.ReadFile("sa.json")
 	if err != nil {
 		log.Fatalf("failed to read service account key file: %v", err)
 	}
 
 	// GCS configuration
 	bucketConfig := gcs.Config{
-		Bucket:         "slate_demo",              // Replace with your actual bucket name
-		ServiceAccount: string(serviceAccountKey), // Pass the JSON content
-		UseGRPC:        true,                      // Adjust based on your GCS setup
+		Bucket:         os.Getenv("BUCKET_NAME"), // Get bucket name from environment
+		UseGRPC:        true,
+		ServiceAccount: string(serviceAccountKey),
 	}
+	log.Printf("GCS config created for bucket: %s", bucketConfig.Bucket)
 
-	// Serialize the configuration to YAML
 	configBytes, err := yaml.Marshal(bucketConfig)
 	if err != nil {
 		log.Fatalf("failed to marshal GCS config: %v", err)
 	}
+	log.Printf("GCS config marshaled successfully")
 
-	// Create the GCS bucket
 	bucket, err := gcs.NewBucket(ctx, logger, configBytes, "gcs")
 	if err != nil {
 		log.Fatalf("Failed to initialize GCS bucket: %v", err)
 	}
+	log.Printf("GCS bucket initialized successfully")
 
 	// Initialize SlateDB
 	db, err := slatedb.Open("slate_demo", bucket)
@@ -96,8 +102,13 @@ func main() {
 		}
 	}()
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // Default to port 8080 if PORT is not set
+	}
+
 	// Start gRPC server
-	listener, err := net.Listen("tcp", ":50051")
+	listener, err := net.Listen("tcp", ":"+port)
 	if err != nil {
 		log.Fatalf("Failed to start listener: %v", err)
 	}
@@ -105,7 +116,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 	pb.RegisterSlateDBServer(grpcServer, NewSlateDBServer(db))
 
-	log.Println("gRPC server started on :50051")
+	log.Printf("gRPC server started on :%s", port)
 	if err := grpcServer.Serve(listener); err != nil {
 		log.Fatalf("Failed to serve gRPC: %v", err)
 	}

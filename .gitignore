@@ -25,3 +25,5 @@ go.work.sum
 .env
 
 sa.json
+
+_Dockerfile_local
