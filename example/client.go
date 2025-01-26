@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -55,9 +56,5 @@ func main() {
 	getResp, err = client.Get(ctx, &pb.GetRequest{
 		Key: "exampleKey",
 	})
-	if err != nil {
-		log.Printf("Get after delete failed (expected): %v", err)
-	} else {
-		log.Printf("Unexpected Get response after delete: %s", getResp.Value)
-	}
+	fmt.Println(getResp)
 }
