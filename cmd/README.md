@@ -60,7 +60,7 @@ The demo scenario showcases the following operations:
 
 ## Screenshots
 
-(Screenshots would be added here)
+![SlateDB Demo](art/slatedemo.jpg)
 
 ## Available Operations
 
