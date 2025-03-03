@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v5.27.3
-// source: slatedb.proto
+// source: proto/slatedb.proto
 
 package __
 
@@ -19,9 +19,15 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	SlateDB_Put_FullMethodName    = "/slatedb.SlateDB/Put"
-	SlateDB_Get_FullMethodName    = "/slatedb.SlateDB/Get"
-	SlateDB_Delete_FullMethodName = "/slatedb.SlateDB/Delete"
+	SlateDB_Put_FullMethodName         = "/slatedb.SlateDB/Put"
+	SlateDB_Get_FullMethodName         = "/slatedb.SlateDB/Get"
+	SlateDB_Delete_FullMethodName      = "/slatedb.SlateDB/Delete"
+	SlateDB_BatchPut_FullMethodName    = "/slatedb.SlateDB/BatchPut"
+	SlateDB_BatchGet_FullMethodName    = "/slatedb.SlateDB/BatchGet"
+	SlateDB_BatchDelete_FullMethodName = "/slatedb.SlateDB/BatchDelete"
+	SlateDB_PrefixScan_FullMethodName  = "/slatedb.SlateDB/PrefixScan"
+	SlateDB_RangeScan_FullMethodName   = "/slatedb.SlateDB/RangeScan"
+	SlateDB_GetStats_FullMethodName    = "/slatedb.SlateDB/GetStats"
 )
 
 // SlateDBClient is the client API for SlateDB service.
@@ -30,9 +36,19 @@ const (
 //
 // Define the service
 type SlateDBClient interface {
+	// Basic operations
 	Put(ctx context.Context, in *PutRequest, opts ...grpc.CallOption) (*PutResponse, error)
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
+	// Advanced operations
+	BatchPut(ctx context.Context, in *BatchPutRequest, opts ...grpc.CallOption) (*BatchPutResponse, error)
+	BatchGet(ctx context.Context, in *BatchGetRequest, opts ...grpc.CallOption) (*BatchGetResponse, error)
+	BatchDelete(ctx context.Context, in *BatchDeleteRequest, opts ...grpc.CallOption) (*BatchDeleteResponse, error)
+	// Scanning operations
+	PrefixScan(ctx context.Context, in *PrefixScanRequest, opts ...grpc.CallOption) (*PrefixScanResponse, error)
+	RangeScan(ctx context.Context, in *RangeScanRequest, opts ...grpc.CallOption) (*RangeScanResponse, error)
+	// Statistics and monitoring
+	GetStats(ctx context.Context, in *GetStatsRequest, opts ...grpc.CallOption) (*GetStatsResponse, error)
 }
 
 type slateDBClient struct {
@@ -73,15 +89,85 @@ func (c *slateDBClient) Delete(ctx context.Context, in *DeleteRequest, opts ...g
 	return out, nil
 }
 
+func (c *slateDBClient) BatchPut(ctx context.Context, in *BatchPutRequest, opts ...grpc.CallOption) (*BatchPutResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchPutResponse)
+	err := c.cc.Invoke(ctx, SlateDB_BatchPut_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *slateDBClient) BatchGet(ctx context.Context, in *BatchGetRequest, opts ...grpc.CallOption) (*BatchGetResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchGetResponse)
+	err := c.cc.Invoke(ctx, SlateDB_BatchGet_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *slateDBClient) BatchDelete(ctx context.Context, in *BatchDeleteRequest, opts ...grpc.CallOption) (*BatchDeleteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BatchDeleteResponse)
+	err := c.cc.Invoke(ctx, SlateDB_BatchDelete_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *slateDBClient) PrefixScan(ctx context.Context, in *PrefixScanRequest, opts ...grpc.CallOption) (*PrefixScanResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PrefixScanResponse)
+	err := c.cc.Invoke(ctx, SlateDB_PrefixScan_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *slateDBClient) RangeScan(ctx context.Context, in *RangeScanRequest, opts ...grpc.CallOption) (*RangeScanResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RangeScanResponse)
+	err := c.cc.Invoke(ctx, SlateDB_RangeScan_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *slateDBClient) GetStats(ctx context.Context, in *GetStatsRequest, opts ...grpc.CallOption) (*GetStatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetStatsResponse)
+	err := c.cc.Invoke(ctx, SlateDB_GetStats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SlateDBServer is the server API for SlateDB service.
 // All implementations must embed UnimplementedSlateDBServer
 // for forward compatibility.
 //
 // Define the service
 type SlateDBServer interface {
+	// Basic operations
 	Put(context.Context, *PutRequest) (*PutResponse, error)
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
+	// Advanced operations
+	BatchPut(context.Context, *BatchPutRequest) (*BatchPutResponse, error)
+	BatchGet(context.Context, *BatchGetRequest) (*BatchGetResponse, error)
+	BatchDelete(context.Context, *BatchDeleteRequest) (*BatchDeleteResponse, error)
+	// Scanning operations
+	PrefixScan(context.Context, *PrefixScanRequest) (*PrefixScanResponse, error)
+	RangeScan(context.Context, *RangeScanRequest) (*RangeScanResponse, error)
+	// Statistics and monitoring
+	GetStats(context.Context, *GetStatsRequest) (*GetStatsResponse, error)
 	mustEmbedUnimplementedSlateDBServer()
 }
 
@@ -100,6 +186,24 @@ func (UnimplementedSlateDBServer) Get(context.Context, *GetRequest) (*GetRespons
 }
 func (UnimplementedSlateDBServer) Delete(context.Context, *DeleteRequest) (*DeleteResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedSlateDBServer) BatchPut(context.Context, *BatchPutRequest) (*BatchPutResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchPut not implemented")
+}
+func (UnimplementedSlateDBServer) BatchGet(context.Context, *BatchGetRequest) (*BatchGetResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchGet not implemented")
+}
+func (UnimplementedSlateDBServer) BatchDelete(context.Context, *BatchDeleteRequest) (*BatchDeleteResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchDelete not implemented")
+}
+func (UnimplementedSlateDBServer) PrefixScan(context.Context, *PrefixScanRequest) (*PrefixScanResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method PrefixScan not implemented")
+}
+func (UnimplementedSlateDBServer) RangeScan(context.Context, *RangeScanRequest) (*RangeScanResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RangeScan not implemented")
+}
+func (UnimplementedSlateDBServer) GetStats(context.Context, *GetStatsRequest) (*GetStatsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetStats not implemented")
 }
 func (UnimplementedSlateDBServer) mustEmbedUnimplementedSlateDBServer() {}
 func (UnimplementedSlateDBServer) testEmbeddedByValue()                 {}
@@ -176,6 +280,114 @@ func _SlateDB_Delete_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SlateDB_BatchPut_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchPutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SlateDBServer).BatchPut(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SlateDB_BatchPut_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SlateDBServer).BatchPut(ctx, req.(*BatchPutRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SlateDB_BatchGet_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchGetRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SlateDBServer).BatchGet(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SlateDB_BatchGet_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SlateDBServer).BatchGet(ctx, req.(*BatchGetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SlateDB_BatchDelete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BatchDeleteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SlateDBServer).BatchDelete(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SlateDB_BatchDelete_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SlateDBServer).BatchDelete(ctx, req.(*BatchDeleteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SlateDB_PrefixScan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PrefixScanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SlateDBServer).PrefixScan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SlateDB_PrefixScan_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SlateDBServer).PrefixScan(ctx, req.(*PrefixScanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SlateDB_RangeScan_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RangeScanRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SlateDBServer).RangeScan(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SlateDB_RangeScan_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SlateDBServer).RangeScan(ctx, req.(*RangeScanRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _SlateDB_GetStats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetStatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SlateDBServer).GetStats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: SlateDB_GetStats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SlateDBServer).GetStats(ctx, req.(*GetStatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SlateDB_ServiceDesc is the grpc.ServiceDesc for SlateDB service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -195,7 +407,31 @@ var SlateDB_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "Delete",
 			Handler:    _SlateDB_Delete_Handler,
 		},
+		{
+			MethodName: "BatchPut",
+			Handler:    _SlateDB_BatchPut_Handler,
+		},
+		{
+			MethodName: "BatchGet",
+			Handler:    _SlateDB_BatchGet_Handler,
+		},
+		{
+			MethodName: "BatchDelete",
+			Handler:    _SlateDB_BatchDelete_Handler,
+		},
+		{
+			MethodName: "PrefixScan",
+			Handler:    _SlateDB_PrefixScan_Handler,
+		},
+		{
+			MethodName: "RangeScan",
+			Handler:    _SlateDB_RangeScan_Handler,
+		},
+		{
+			MethodName: "GetStats",
+			Handler:    _SlateDB_GetStats_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "slatedb.proto",
+	Metadata: "proto/slatedb.proto",
 }
