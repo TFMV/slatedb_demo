@@ -27,3 +27,5 @@ go.work.sum
 sa.json
 
 _Dockerfile_local
+
+.DS_Store

@@ -5,11 +5,14 @@ go 1.23.1
 toolchain go1.23.5
 
 require (
+	github.com/fatih/color v1.18.0
 	github.com/go-kit/log v0.2.1
+	github.com/rodaine/table v1.3.0
 	github.com/slatedb/slatedb-go v0.1.3
 	github.com/thanos-io/objstore v0.0.0-20240913165201-fd105025a2e5
 	google.golang.org/grpc v1.66.0
 	google.golang.org/protobuf v1.34.2
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
@@ -38,6 +41,8 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.5 // indirect
 	github.com/huandu/skiplist v1.2.1 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.4 // indirect
 	github.com/maypok86/otter v1.2.2 // indirect
 	github.com/oklog/ulid/v2 v2.1.1-0.20240413180941-96c4edf226ef // indirect
@@ -66,6 +71,5 @@ require (
 	google.golang.org/genproto v0.0.0-20240624140628-dc46fd24d27d // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240617180043-68d350f18fd4 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240624140628-dc46fd24d27d // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
